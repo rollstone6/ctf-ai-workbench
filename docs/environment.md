@@ -12,9 +12,14 @@
 | Python | 3.12.14 |
 | Git | 2.52.0 |
 | Node.js | 24.22.1；基础 CTF/Sapper 流程不依赖 Node |
-| 可见计算资源 | 5 个逻辑 CPU，约 33 GiB 内存，无 Swap |
+| 实际 CPU 配额 | 4 核 CPU（cgroup 配额） |
+| 实际内存配额 | 32 GiB（34,359,738,368 字节） |
+| 系统可见资源 | 5 个逻辑 CPU、约 33 GiB 内存；不代表容器可用配额 |
+| Swap | 无 |
 | 工作区存储 | overlay 文件系统，约 63 GiB 总量，采集时约 60 GiB 可用 |
 | 工作区 | `/workspace`，主仓库 `/workspace/CTF_WP` |
+
+实际配额以容器 cgroup 限制为依据：`/sys/fs/cgroup/cpu.max` 为 `400000 100000`，即每 100,000 微秒周期允许使用 400,000 微秒 CPU 时间，相当于 4 核；`/sys/fs/cgroup/memory.max` 为 `34359738368`，即 32 GiB。`free` 和逻辑 CPU 数量反映系统可见资源，不能替代配额信息。
 
 这是托管的云执行环境，命令受文件系统沙箱约束；常规项目文件写在 `/workspace` 或 `/tmp`。
 GitHub/HTTPS 访问使用平台提供的代理和证书信任配置，保持 TLS 校验开启。
