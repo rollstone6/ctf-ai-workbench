@@ -2,3 +2,7 @@ __pycache__/
 *.py[cod]
 .venv/
 .sapper/
+# Project-local Sapper hook configuration contains absolute runtime paths.
+.claude/settings.json
+
+.runtime/

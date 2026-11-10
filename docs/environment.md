@@ -25,7 +25,7 @@
 GitHub/HTTPS 访问使用平台提供的代理和证书信任配置，保持 TLS 校验开启。
 环境提供 Docker CLI，但本次没有验证 Docker daemon 或构建竞赛镜像。
 
-当前准备的是本地 CLI、技能文档和离线测试工作流；没有后台应用服务。
+基础工作流包含本地 CLI、技能文档和离线测试；另可按下文启动 Sapper 事实图可视化服务。
 所有工具代码现已收录在本仓库的 `vendor/`，运行不依赖 `/workspace` 下另行克隆的上游项目。
 可复用的云配置提案保存在 `docs/cloud-environment.json`。本次草稿更新被平台以不可编辑状态拒绝，尚未确认保存；本次操作不发布云环境。
 
@@ -55,3 +55,19 @@ sapper --help
 可选 Tavily 搜索需要额外凭据和包；PayloadsAllTheThings 数据未下载。
 
 每个云任务已经隔离，使用现有 checkout，无需创建额外 Git worktree。
+
+## 启动 Sapper 本地模式
+
+```bash
+cd /workspace/CTF_WP
+bash tools/environment/start-sapper.sh
+```
+
+该命令可重复运行初始化步骤：保留已有事实图，配置本项目的 Claude hooks，校验事实图，然后在本机回环地址的 8765 端口前台启动可视化服务。
+如需换端口，可设置 `SAPPER_VIEW_PORT`。按 Ctrl-C 停止前台服务；进程不会随云快照保存，新实例需重新运行启动命令。
+
+当前实例已初始化 `.sapper/`，默认目标为“维护 CTF AI 工作台的解题记录与任务状态”。事实图和项目级 hooks 不提交 Git。
+本次部署的后台进程 PID 记录在 `.runtime/sapper/view.pid`，日志位于 `.runtime/sapper/view.log`；这些运行文件同样不提交。
+验证服务时，应请求页面并读取页面引用的实时图 JSON，确认返回当前任务目标；仅有进程或端口不能证明启动成功。
+
+该服务展示和跟踪任务图；自动解题需要另行提供具体任务。完整竞赛编队还需要平台地址、模型网关和凭据，当前未配置。
