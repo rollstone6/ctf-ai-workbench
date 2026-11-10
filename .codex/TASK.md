@@ -1,43 +1,52 @@
 # 当前任务交接
 
-更新日期：2026-11-10。仓库：`rollstone6/ctf-ai-workbench`；当前路径 `/workspace/CTF_WP`。交接文件是人工/代理维护的背景记录，不自动应用配置。
+更新日期：2026-11-10；仓库 `rollstone6/ctf-ai-workbench`，路径 `/workspace/CTF_WP`。先读 AGENTS.md 并核对工作区。本记录不自动应用配置或授权新任务。
 
 ## 1. 当前目标
 
-按用户提供的组合架构整理题型范围、部署原则、框架定位、模型池、分工、成本约束和独立验证流程。
+按五阶段方案落地最小做题环境、三类题工具、DSH 单 Solver＋技能、Sapper 层级配置和 BreachWeave pentest 备用控制台。
 
 ## 2. 已完成
 
-- 新建 `docs/architecture.md`，统一 Web / Reverse / Crypto 范围：黑产链路题归 Web，排除 SQL 注入。
-- 新建 `config/architecture-plan.json`，记录资源、候选模型和规划路由；全部云模型默认禁用，精确 ID、endpoint、凭据及参数待验证；尚无运行时加载器。
-- 更新 README 为架构入口；旧笔记完整保留在 `docs/legacy-notes.md`，不作为当前比赛范围。
-- 原有 Sapper、15 项技能、中文反馈、本地启动和任务交接约定保留。
+- Docker daemon、Codex CLI、Python、共享目录 `/workspace/ctf-challenges` 已自检；无网络容器完成示例解码并回写证据。
+- Web HTTP/浏览器交互、Python RSA/AES、Ghidra 12.2 ELF 分析、SageMath 10.6 数学运算及包装入口均通过。
+- 工具在 `/workspace/ctf-toolchain`；官方二进制校验、镜像 digest、Python/npm/Bun 版本锁和安装/自检脚本已保存。
+- DSH `0.2.2-rc.1` 的自定义 ctf-skills profile 已启动验证，关闭额外代理/jobs/schedule；真实接管收益未验证。
+- Sapper 五层角色设计保存在 `config/sapper-layered.example.json`，不是可直接执行的 native fleet.json；原有本地查看器保留。
+- BreachWeave pentest 固定提交 `6957a55...` 的备用控制台已启动验证，47 项项目状态/调度测试通过，`maxSolvers=0`，采用独立最小启动镜像。
+- 用户提供了模型网关和精确 ID；仅记录非敏感配置和安全变量名，三组聊天中暴露的 Key 没有写入文件或用于调用。
 
-## 3. 未完成与外部条件
+## 3. 阻塞与未完成
 
-- DSH、BreachWeave 的具体仓库/版本未提供，尚未接入；模型 endpoint、凭据绑定、DeepSeek 精确 ID 等未提供。
-- 16 核/32GB 目标服务器、完整竞赛编队、真实模型调用及同题基准均未执行。
-- 云配置草稿此前返回 `draft_not_editable`；配置提案保存在仓库，不代表已应用或发布。
+- 三组 Key 应撤销/轮换，新值须通过安全设置注入 `KIMI_API_KEY`、`CTF_OPENAI_API_KEY`、`ALIYUN_DASHSCOPE_API_KEY`；检查时三变量均未设置。
+- GPT 网关 `https://api.3366.ai` 是第三方，路径/协议待确认；所有候选模型、推理参数和 API 可用性仍未验证。
+- DSH 复杂 Crypto/Reverse 接管收益需要安全凭据、固定题集、同条件对照；没有执行模型任务。
+- Sapper 完整军团未启动；还需 tmux、预算/范围及 Agent CLI/网关协议适配。不能直接把 OpenAI 兼容网关当成 Anthropic 接口。
+- BreachWeave 仅备用控制台；完整 Web Solver 镜像、CTF 平台适配和跨框架题目互斥自动接线未验证。目前没有两个框架同时控制题目。
+- 云凭据要求草稿保存再次返回 `draft_not_editable`，未确认保存；提案在 `config/model-secret-requirements.json`。进程不随快照恢复。
 
 ## 4. 关键决策
 
-- 16 核/32GB 是目标规格；当前实测配额仍为 4 核、32 GiB。无 GPU，不部署本地大模型。
-- 单题先快路，按需要升级持续推理或批量编排；每题唯一协调者，独立验证结果。
-- 框架比较尽量固定模型、工具、题目和预算；跨模型结果单独分组。
-- 路由按能力、成本、可用性选择；安全拒绝不触发跨提供方重试。模型性能/价格倍率是待验证假设。
-- 本次仅整理文档与规划，不更改正在运行的模型或自动启动其他代理。
+- 当前配额 4 核/32 GiB；16 核/32GB 只是目标。模型走云 API，不运行本地大模型。
+- 大型工具和框架依赖在工具目录，仓库保存锁文件和可复用安装/启动脚本，不提交镜像、安装包、node_modules、访问凭据或运行日志。
+- DSH skills 模式是本项目单 Solver 覆盖预设，非上游同名功能；仅验证配置组合和界面，不夸大技能会话/收益。
+- BreachWeave 实际同步 builtin Dockerfile，不能按 README 的自定义 Dockerfile 优先级假定；已使用预构建镜像配置入口，Solver 保持禁用。
+- 模型路由不以绕过安全拒绝为目的；每题必须有唯一 controller，启用前还需补齐执行层互斥。
 
-## 5. 修改文件
+## 5. 本次主要文件
 
-`README.md`、`docs/architecture.md`、`docs/legacy-notes.md`、`config/architecture-plan.json`、本文件。
+`docs/staged-rollout.md`、`config/toolchain-lock.json`、`config/frameworks-lock.json`、`config/model-providers.example.json`、`config/model-secret-requirements.json`、`config/sapper-layered.example.json`、`config/dsh-skills-only.patch.yml`、`config/frameworks/dsh/`、`bin/dsh` / `sage` / `ghidra-headless`、`tools/environment/` 下新工具脚本，以及架构/README/云配置提案。
 
 ## 6. 验证结果
 
-- 本次：JSON 格式与路由别名、默认禁用状态、资源/范围约束、文档链接、旧笔记保留及差异格式检查；无运行时代码改动，不重跑无关代码测试。
-- 前一代码阶段：68 项检查通过，并验证中文实时页面和 JSON 协议。进程状态在新会话/实例需重新检查。
+- 第一/二阶段各代表性工具检查和安装重复执行通过；Sage/Ghidra 包装器实跑通过。
+- DSH 组合配置的编排插件关闭，浏览器界面验证通过；没有真实模型调用。
+- BreachWeave 登录页、认证设置 200、未登录接口 401、禁用 Solver 配置验证通过；47 项选定单元测试通过，未运行全项目回归。
+- JSON/文档链接/Python 语法/npm 完整性锁检查通过。原有 68 项检查在上一代码阶段通过，本次不重复无关套件。
+- 运行端口上次为 Sapper 8765、DSH 3080、BreachWeave 18765；新会话需重新检查，DSH 的进程访问凭据不得粘贴进交接或聊天。
 
 ## 7. 下一步
 
-先读 `AGENTS.md`，核对 `git status` 和用户最新目标。若用户要实际集成框架，再确认具体上游仓库、版本及模型网关，通过最小 API 验证后逐步接入；不要将设计模板当作可执行部署配置。
+先完成安全凭据轮换/注入并验证模型协议，再以固定复杂题集比较 Codex 与 DSH；之后按角色模板做 Sapper CLI/网关适配与分层启动。只有完成互斥适配及工具镜像验证后，才启用 BreachWeave Solver。
 
-详情：[组合架构](../docs/architecture.md)、[配置模板](../config/architecture-plan.json)、[环境与启动](../docs/environment.md)。
+详情：[五阶段落地](../docs/staged-rollout.md)、[架构](../docs/architecture.md)、[环境](../docs/environment.md)。

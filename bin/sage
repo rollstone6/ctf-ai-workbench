@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+shared="${CTF_CHALLENGES_DIR:-/workspace/ctf-challenges}"
+mkdir -p "$shared/inbox" "$shared/work" "$shared/evidence"
+image=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["sage_image"])' "$repo_root/config/toolchain-lock.json")
+exec env -u DOCKER_HOST -u DOCKER_CONTEXT -u DOCKER_TLS -u DOCKER_TLS_VERIFY -u DOCKER_CERT_PATH \
+ docker --host=unix:///var/run/docker.sock run --rm -i --network=none \
+ --cpus="${SAGE_CPUS:-2}" --memory="${SAGE_MEMORY:-4g}" \
+ --mount "type=bind,src=$shared,dst=/challenges" \
+ --mount "type=bind,src=$shared/inbox,dst=/challenges/inbox,readonly" \
+ --workdir /challenges --entrypoint sage "$image" "$@"

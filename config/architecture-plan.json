@@ -50,8 +50,8 @@
       ],
       "enabled": false,
       "api_validation": "pending",
-      "endpoint": null,
-      "credential_binding": null
+      "endpoint": "https://api.moonshot.cn/v1",
+      "credential_binding": "KIMI_API_KEY"
     },
     "kimi_standard": {
       "id": "kimi-k3.1-pro",
@@ -65,8 +65,8 @@
       ],
       "enabled": false,
       "api_validation": "pending",
-      "endpoint": null,
-      "credential_binding": null
+      "endpoint": "https://api.moonshot.cn/v1",
+      "credential_binding": "KIMI_API_KEY"
     },
     "sol": {
       "id": "gpt-6.1-sol",
@@ -82,11 +82,11 @@
       ],
       "enabled": false,
       "api_validation": "pending",
-      "endpoint": null,
-      "credential_binding": null
+      "endpoint": "https://api.3366.ai",
+      "credential_binding": "CTF_OPENAI_API_KEY"
     },
     "deepseek_flash": {
-      "id": null,
+      "id": "deepseek-v4.1-flash-1017",
       "requested_family": "DeepSeek V4.1 Flash",
       "efforts": [],
       "roles": [
@@ -96,8 +96,8 @@
       ],
       "enabled": false,
       "api_validation": "pending",
-      "endpoint": null,
-      "credential_binding": null
+      "endpoint": "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "credential_binding": "ALIYUN_DASHSCOPE_API_KEY"
     },
     "luna": {
       "id": "gpt-6-luna",
@@ -200,5 +200,18 @@
       "budget"
     ],
     "separate_cross_model_results": true
+  },
+  "frameworks": {
+    "dsh": {
+      "repository": "https://github.com/deepseek-ai/deepseek-harness",
+      "distribution": "@deepseek-ai/dsh@0.2.2-rc.1",
+      "mode": "single_solver_skills"
+    },
+    "breachweave": {
+      "repository": "https://github.com/m-sec-org/BreachWeave",
+      "branch": "pentest",
+      "mode": "standby_control_plane",
+      "max_solvers": 0
+    }
   }
 }

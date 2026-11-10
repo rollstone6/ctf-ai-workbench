@@ -1,0 +1,61 @@
+{
+  "status": "configuration_template_not_native_fleet_json",
+  "auto_start": false,
+  "roles": {
+    "commander": {
+      "model_alias": "sol",
+      "responsibility": "读题目板、分派与收敛，不直接执行攻击"
+    },
+    "general": {
+      "model_alias": "sol",
+      "web_model_alias": "kimi_fast",
+      "responsibility": "承接复杂 Crypto/Reverse；Web 走已验证的 Kimi 专项配置"
+    },
+    "scout": {
+      "model_alias": "deepseek_flash",
+      "responsibility": "限时初筛和证据采集"
+    },
+    "soldier": {
+      "model_alias": "deepseek_flash",
+      "web_model_alias": "kimi_fast",
+      "responsibility": "执行明确任务并保存证据"
+    },
+    "watchdog": {
+      "model_alias": null,
+      "responsibility": "脚本保活、预算/截止检查、会话交接，不自行制定策略"
+    }
+  },
+  "role_counts": {
+    "commander": 1,
+    "general": 1,
+    "scout": 1,
+    "soldier": 2,
+    "watchdog": 1
+  },
+  "current_machine_active_solver_limit": 2,
+  "budget_and_deadline": null,
+  "requires_before_start": [
+    "validated_model_endpoints",
+    "secure_credentials",
+    "supported_agent_cli",
+    "tmux",
+    "explicit_budget_and_deadline",
+    "authorized_challenge_scope"
+  ],
+  "shared_challenge_dir": "/workspace/ctf-challenges",
+  "ownership": {
+    "rule": "one_controller_per_challenge",
+    "controllers": [
+      "sapper",
+      "breachweave"
+    ],
+    "automatic_enforcement": "not_integrated_yet"
+  },
+  "upstream_entrypoints": [
+    "vendor/sapper-v2/docker/commander/entrypoint.sh",
+    "vendor/sapper-v2/docker/commander/watchdog.sh",
+    "vendor/sapper-v2/docker/commander/worker.sh"
+  ],
+  "engine_contract": "Claude-compatible CLI flags and result JSON envelope via SAPPER_BIN; OpenAI API gateways need a validated adapter",
+  "provider_configuration": "config/model-providers.example.json"
+}

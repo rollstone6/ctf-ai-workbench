@@ -1,0 +1,52 @@
+{
+  "status": "credentials_and_api_validation_pending",
+  "response_language": "zh-CN",
+  "providers": [
+    {
+      "id": "moonshotai-cn",
+      "base_url": "https://api.moonshot.cn/v1",
+      "api_protocol": "openai-compatible-chat-completions-candidate",
+      "api_key_env": "KIMI_API_KEY",
+      "models": [
+        {
+          "id": "kimi-k3.1-pro-highspeed",
+          "reasoning_effort": "high",
+          "use": "web_primary_and_handoff_candidate"
+        },
+        {
+          "id": "kimi-k3.1-pro",
+          "reasoning_effort": "low",
+          "use": "batch_and_availability_fallback"
+        }
+      ]
+    },
+    {
+      "id": "openai",
+      "base_url": "https://api.3366.ai",
+      "operator_note": "User-specified third-party gateway, not api.openai.com; /v1 path and protocol require validation.",
+      "api_protocol": "openai-compatible-candidate",
+      "api_key_env": "CTF_OPENAI_API_KEY",
+      "models": [
+        {
+          "id": "gpt-6.1-sol",
+          "reasoning_effort": "high",
+          "use": "crypto_reverse_and_sapper_commander"
+        }
+      ]
+    },
+    {
+      "id": "aliyun-coding-plan",
+      "user_alias": "dsh",
+      "base_url": "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      "api_protocol": "openai-compatible-candidate",
+      "api_key_env": "ALIYUN_DASHSCOPE_API_KEY",
+      "models": [
+        {
+          "id": "deepseek-v4.1-flash-1017",
+          "reasoning_effort": null,
+          "use": "low_cost_soldier_scout"
+        }
+      ]
+    }
+  ]
+}

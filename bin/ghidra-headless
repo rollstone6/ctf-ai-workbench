@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+tool_root="${CTF_TOOLCHAIN_DIR:-/workspace/ctf-toolchain}"
+mkdir -p "$tool_root/home"
+export JAVA_HOME="$tool_root/jdk-25.0.5+8"
+export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Duser.home=$tool_root/home"
+exec "$tool_root/ghidra_12.2_PUBLIC/support/analyzeHeadless" "$@"

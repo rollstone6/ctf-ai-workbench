@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -euo pipefail
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+tool_root="${CTF_TOOLCHAIN_DIR:-/workspace/ctf-toolchain}"
+export DSH_HOME="${DSH_HOME:-$tool_root/state/dsh}"
+exec "$tool_root/frameworks/dsh/node_modules/.bin/dsh" --profile ctf-skills --patch "$repo_root/config/dsh-skills-only.patch.yml" "$@"

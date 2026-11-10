@@ -23,13 +23,13 @@
 
 ## 3. 四类工具的定位
 
-下表是选型方案，不是同条件性能基准。DSH、BreachWeave 的具体仓库、版本和实现仍待提供并核实；没有实际集成这两个框架。
+下表是选型方案，不是同条件性能基准。当前已确认 DSH 上游为 deepseek-ai/deepseek-harness，BreachWeave 采用 m-sec-org/BreachWeave 的 pentest 分支。安装与运行验证范围见 [五阶段落地](staged-rollout.md)；尚未完成真实模型任务与跨框架调度。
 
 | 工具 | 方案中的核心定位 | 最适用场景 | 主要限制与验证项 |
 | --- | --- | --- | --- |
 | Codex | 通用 Coding Agent；默认单 Solver 快路与分诊 | 简单 Crypto、脚本解密、普通 Reverse、题意/响应与证据分析 | 比赛专用状态、实例生命周期、队列需要项目层补齐；不假定不存在并行能力 |
 | DSH + CTF Skill | 可接模型的 Harness，配合分诊、持续 Solver、结构化记忆和复核 | 复杂 Crypto/Reverse、断点续做、人工纠偏 | 并行不保证更快；模型适配、会话记忆与平台流程需按具体版本配置 |
-| BreachWeave | 计划采用 Manager/Solver/Observer 角色与 Web 比赛接口 | 自动拉题、实例管理、中小批量 Web、多 Solver 并行 | 主分支/角色/API 能力待上游版本确认；Crypto/Reverse 需要额外配置 |
+| BreachWeave | Manager/Planner/Solver/Observer 与本地项目/资产 Web 控制台 | 自动拉题、实例管理、中小批量 Web、多 Solver 并行 | 当前采用 pentest 分支的本地资产控制台；CTF 平台接口不能按主分支假定；Crypto/Reverse 需要额外配置 |
 | Sapper | 多角色编排、事实意图图、上下文交接、Watchdog | 长时间比赛、批量任务、经验继承 | 已收录源码并验证本地 CLI/任务图；完整编队需 Docker、tmux、Agent CLI、模型与平台配置，当前未启动 |
 
 Sapper 的 commander/general/scout/soldier/watchdog 是上游完整比赛模式的角色设计，不代表当前本地查看器已经在运行这些 Agent。
@@ -70,7 +70,7 @@ flowchart TD
 | Kimi K3.1 Pro Highspeed | `kimi-k3.1-pro-highspeed` | Web 主力；DSH 默认主 Solver；BreachWeave Planner/Solver/Observer | 交互与冲刺 `high` |
 | Kimi K3.1 Pro | `kimi-k3.1-pro` | 后台批量、Kimi Observer；难题深度备用 | 批量 `low`；难题候选 `max` |
 | GPT-6.1 Sol | `gpt-6.1-sol` | Crypto 快路、Reverse 分析；Sapper Commander；日志与证据整理 | `medium` / `high` |
-| DeepSeek V4.1 Flash | 待精确 ID | 可用性备用；Sapper Soldier/Scout | 待提供方确认 |
+| DeepSeek V4.1 Flash | `deepseek-v4.1-flash-1017`（用户提供，API 待验证） | 可用性备用；Sapper Soldier/Scout | 待提供方确认 |
 | GPT-6 Luna | `gpt-6-luna` | Observer、状态压缩、低成本摘要 | `low` |
 | GPT-6 Astra | `gpt-6-astra` | 压轴 Crypto/Reverse，非 Web 路线 | `high` / `max` |
 | GPT-5.5 | `gpt-5.5` | 可选 API 备用，不作为默认主力 | 提供方默认 |
@@ -110,8 +110,12 @@ flowchart TD
 | --- | --- |
 | Sapper、CTF 技能、中文反馈、项目阅读技能 | 已整合；本地开发检查此前通过 |
 | 本架构、模型路由与资源规划模板 | 已整理，见 `config/architecture-plan.json`；没有运行时加载器 |
-| DSH、BreachWeave | 计划采用；需要用户提供具体仓库/版本后才能核对与接入 |
+| DSH、BreachWeave | DSH 单 Solver profile 与 BreachWeave pentest 备用控制台已启动验证；真实模型与完整调度未接入 |
 | 云 API 模型、价格、推理参数和真实报告遵循率 | 待 endpoint、模型可用性与安全凭据绑定验证 |
 | 16 核目标服务器部署、完整竞赛编队、真实题目基准 | 未执行 |
 
 接入顺序：确认上游版本与网关 → 最小 API 能力/费用检查 → 单题快路 → 独立验证 → 同模型条件下比较框架 → 必要时扩展批量调度。本文不宣称已部署完整组合系统。
+
+## 实施阶段
+
+采用用户指定的五阶段顺序，最新状态、命令和限制统一维护在 [五阶段落地记录](staged-rollout.md)。

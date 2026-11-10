@@ -1,0 +1,4 @@
+# Control-plane bootstrap image only. Solvers stay disabled (maxSolvers=0).
+# This is not the full Web pentest toolchain image.
+FROM python@sha256:5e2bdb1b0d542d5039cffb8181c65930093949194a65c365dfb1b0fe13a4fa5b
+RUN touch /root/THIS_IS_DOCKER_CONTAINER_NOT_TARGET_MACHINE.txt

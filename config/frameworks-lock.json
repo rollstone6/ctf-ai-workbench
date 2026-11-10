@@ -1,0 +1,20 @@
+{
+  "dsh": {
+    "repository": "https://github.com/deepseek-ai/deepseek-harness",
+    "inspected_commit": "fcc0ad462172522aaf5c93a7b2e01f6b9f0b0159",
+    "npm_package": "@deepseek-ai/dsh",
+    "version": "0.2.2-rc.1",
+    "integrity": "sha512-ijR9UEVYkG15Q/Q79JzvzLBzQOQfc63VLr9n6flpwHPhr5IKn2UxthnSoto/P9l7qGd7pPvI1Ra6TW7LH3oKpg==",
+    "mode": "skills_only_initial",
+    "benefit_benchmark": "not_run"
+  },
+  "breachweave": {
+    "repository": "https://github.com/m-sec-org/BreachWeave",
+    "branch": "pentest",
+    "commit": "6957a55f15e0d585f4b728c831021a34f7e02891",
+    "port": 18765,
+    "initial_max_solvers": 0,
+    "scope": "standby_local_asset_control_plane",
+    "ctf_platform_adapter_verified": false
+  }
+}

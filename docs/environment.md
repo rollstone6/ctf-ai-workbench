@@ -23,7 +23,7 @@
 
 这是托管的云执行环境，命令受文件系统沙箱约束；常规项目文件写在 `/workspace` 或 `/tmp`。
 GitHub/HTTPS 访问使用平台提供的代理和证书信任配置，保持 TLS 校验开启。
-环境提供 Docker CLI，但本次没有验证 Docker daemon 或构建竞赛镜像。
+Docker daemon 已通过实际容器和共享目录回读检查；另安装了 Ghidra/JDK、SageMath 和 Web/Python 工具。最新结果见 [五阶段落地](staged-rollout.md)。完整竞赛镜像及真实模型编队仍未验证。
 
 基础工作流包含本地 CLI、技能文档和离线测试；另可按下文启动 Sapper 事实图可视化服务。
 所有工具代码现已收录在本仓库的 `vendor/`，运行不依赖 `/workspace` 下另行克隆的上游项目。
