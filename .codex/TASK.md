@@ -1,47 +1,43 @@
 # 当前任务交接
 
-更新日期：2026-11-10。仓库：`rollstone6/ctf-ai-workbench`；当前实例路径仍为 `/workspace/CTF_WP`。本文件为人工/代理维护的交接记录，不会由 Codex 自动同步。
+更新日期：2026-11-10。仓库：`rollstone6/ctf-ai-workbench`；当前路径 `/workspace/CTF_WP`。交接文件是人工/代理维护的背景记录，不自动应用配置。
 
 ## 1. 当前目标
 
-为已整合的 CTF/Sapper 项目建立长期协作与短期交接约定，降低重复读取代码、日志和长 Thread 历史的成本。
+按用户提供的组合架构整理题型范围、部署原则、框架定位、模型池、分工、成本约束和独立验证流程。
 
 ## 2. 已完成
 
-- CTF Skills 和 Sapper 已完整收录于 `vendor/`，保留许可证和来源版本记录。
-- Sapper 已提供本地启动脚本、中文常用 CLI 反馈、中文网页标签和中文优先模型模板。
-- 现有 15 项技能包括仓库原创的 `project-analysis` 和 `code-read`。
-- 已创建根目录 `AGENTS.md`，约定上下文控制、验证与交接维护；两个项目阅读技能已补充交接流程。
+- 新建 `docs/architecture.md`，统一 Web / Reverse / Crypto 范围：黑产链路题归 Web，排除 SQL 注入。
+- 新建 `config/architecture-plan.json`，记录资源、候选模型和规划路由；全部云模型默认禁用，精确 ID、endpoint、凭据及参数待验证；尚无运行时加载器。
+- 更新 README 为架构入口；旧笔记完整保留在 `docs/legacy-notes.md`，不作为当前比赛范围。
+- 原有 Sapper、15 项技能、中文反馈、本地启动和任务交接约定保留。
 
-## 3. 未完成与可选配置
+## 3. 未完成与外部条件
 
-- 当前协作约定任务无功能性遗留项；提交状态以 `git status` / `git log` 为准。
-- 完整竞赛编队、模型网关、比赛平台凭据未配置；不属于当前任务的必做项。
-- 云配置草稿上次返回 `draft_not_editable`，更新未确认保存；提案已保留于 `docs/cloud-environment.json`。不要假定该文件自动应用到平台。
+- DSH、BreachWeave 的具体仓库/版本未提供，尚未接入；模型 endpoint、凭据绑定、DeepSeek 精确 ID 等未提供。
+- 16 核/32GB 目标服务器、完整竞赛编队、真实模型调用及同题基准均未执行。
+- 云配置草稿此前返回 `draft_not_editable`；配置提案保存在仓库，不代表已应用或发布。
 
 ## 4. 关键决策
 
-- 长期规则、短期交接、本机事实图分别存于 `AGENTS.md`、本文件、`.sapper/`。
-- 交接内容保持简短、替换过期状态；不复制聊天和完整日志。不按固定 Compaction 百分比安排换 Thread。
-- 阅读交接后核对工作区与当前用户目标；旧记录不授权新动作。
-- Sapper JSON、ID、状态枚举保持兼容。中文模型反馈目前只有模板约束，尚无真实模型调用验证。
+- 16 核/32GB 是目标规格；当前实测配额仍为 4 核、32 GiB。无 GPU，不部署本地大模型。
+- 单题先快路，按需要升级持续推理或批量编排；每题唯一协调者，独立验证结果。
+- 框架比较尽量固定模型、工具、题目和预算；跨模型结果单独分组。
+- 路由按能力、成本、可用性选择；安全拒绝不触发跨提供方重试。模型性能/价格倍率是待验证假设。
+- 本次仅整理文档与规划，不更改正在运行的模型或自动启动其他代理。
 
-## 5. 本次修改文件
+## 5. 修改文件
 
-- `AGENTS.md`、`.codex/TASK.md`：协作规则与当前交接。
-- `.agents/skills/project-analysis/SKILL.md`、`.agents/skills/code-read/SKILL.md`：加入交接读取、分阶段记录和限定搜索范围。
-- `docs/environment.md`：添加新 Thread 继续工作的入口。
+`README.md`、`docs/architecture.md`、`docs/legacy-notes.md`、`config/architecture-plan.json`、本文件。
 
 ## 6. 验证结果
 
-- 上一代码阶段执行 `bash tools/environment/setup.sh`：68 项检查通过；浏览器已验证中文页面、实时图及 JSON 协议。
-- 本次只改文档/技能说明：检查路径和 `git diff --check`；不重跑未受影响的代码测试。
-- 上次 Sapper 在回环端口 8765 运行；跨 Thread/新实例必须重新检查，不假定进程仍在。
+- 本次：JSON 格式与路由别名、默认禁用状态、资源/范围约束、文档链接、旧笔记保留及差异格式检查；无运行时代码改动，不重跑无关代码测试。
+- 前一代码阶段：68 项检查通过，并验证中文实时页面和 JSON 协议。进程状态在新会话/实例需重新检查。
 
 ## 7. 下一步
 
-1. 阅读适用 `AGENTS.md` 与本文件，检查 `git status` 和用户最新目标。
-2. 有具体开发任务时按目标选择项目分析或代码阅读技能，避免重新加载全部历史。
-3. 若用户要查看 Sapper，按 `docs/environment.md` 检查/启动服务并验证真实页面；若要完整竞赛模式，再核对缺少的配置。
+先读 `AGENTS.md`，核对 `git status` 和用户最新目标。若用户要实际集成框架，再确认具体上游仓库、版本及模型网关，通过最小 API 验证后逐步接入；不要将设计模板当作可执行部署配置。
 
-详细背景：[项目分析](../docs/project-analysis.md)、[环境与启动](../docs/environment.md)。
+详情：[组合架构](../docs/architecture.md)、[配置模板](../config/architecture-plan.json)、[环境与启动](../docs/environment.md)。

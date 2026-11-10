@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "status": "design_only",
+  "runtime_loader_implemented": false,
+  "scope": {
+    "categories": [
+      "Web",
+      "Reverse",
+      "Crypto"
+    ],
+    "web_subcategories": [
+      "file_disclosure",
+      "path_traversal",
+      "xss",
+      "file_inclusion",
+      "file_upload",
+      "authentication",
+      "business_logic",
+      "illicit_chain_analysis"
+    ],
+    "excluded": [
+      "sql_injection"
+    ],
+    "illicit_chain_parent": "Web"
+  },
+  "resources": {
+    "target": {
+      "cpu_cores": 16,
+      "memory_gb": 32,
+      "gpu": false,
+      "local_llm": false
+    },
+    "current_observed": {
+      "cpu_quota_cores": 4,
+      "memory_limit_bytes": 34359738368
+    },
+    "model_execution": "cloud_api"
+  },
+  "models": {
+    "kimi_fast": {
+      "id": "kimi-k3.1-pro-highspeed",
+      "efforts": [
+        "high"
+      ],
+      "roles": [
+        "web_solver",
+        "dsh_solver",
+        "breachweave_planner",
+        "breachweave_solver"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "kimi_standard": {
+      "id": "kimi-k3.1-pro",
+      "efforts": [
+        "low",
+        "max"
+      ],
+      "roles": [
+        "batch_solver",
+        "breachweave_observer"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "sol": {
+      "id": "gpt-6.1-sol",
+      "efforts": [
+        "medium",
+        "high"
+      ],
+      "roles": [
+        "crypto_solver",
+        "reverse_analyst",
+        "sapper_commander",
+        "evidence_analyst"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "deepseek_flash": {
+      "id": null,
+      "requested_family": "DeepSeek V4.1 Flash",
+      "efforts": [],
+      "roles": [
+        "availability_fallback",
+        "sapper_soldier",
+        "sapper_scout"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "luna": {
+      "id": "gpt-6-luna",
+      "efforts": [
+        "low"
+      ],
+      "roles": [
+        "observer",
+        "summarizer"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "astra": {
+      "id": "gpt-6-astra",
+      "efforts": [
+        "high",
+        "max"
+      ],
+      "roles": [
+        "hard_crypto_solver",
+        "hard_reverse_solver"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    },
+    "gpt55": {
+      "id": "gpt-5.5",
+      "efforts": [],
+      "roles": [
+        "optional_api_fallback"
+      ],
+      "enabled": false,
+      "api_validation": "pending",
+      "endpoint": null,
+      "credential_binding": null
+    }
+  },
+  "routes": {
+    "crypto": {
+      "fast_path": "codex",
+      "primary": "sol",
+      "complex_framework": "dsh",
+      "complex_primary": "kimi_fast",
+      "final_escalation": "astra"
+    },
+    "reverse": {
+      "fast_path": "codex",
+      "primary": "sol",
+      "complex_framework": "dsh",
+      "complex_primary": "kimi_fast",
+      "final_escalation": "astra"
+    },
+    "web": {
+      "primary": "kimi_fast",
+      "batch_framework": "breachweave",
+      "planner": "kimi_fast",
+      "observer": "kimi_standard"
+    },
+    "sapper": {
+      "mode": "optional_long_running_coordinator",
+      "commander": "sol",
+      "web_specialist": "kimi_fast",
+      "soldier": "deepseek_flash",
+      "scout": "deepseek_flash",
+      "observer": "luna"
+    }
+  },
+  "validation": {
+    "independent_result_verification": true,
+    "keep_candidate_offline_and_platform_statuses_separate": true,
+    "response_language": "zh-CN",
+    "preserve_machine_protocols": true
+  },
+  "fallback": {
+    "technical_failure_reasons": [
+      "rate_limit",
+      "timeout",
+      "service_unavailable"
+    ],
+    "requires_compatible_validated_model": true,
+    "retry_and_cost_limits": "must_be_set_before_enabling",
+    "on_policy_refusal": "stop_and_review_scope",
+    "on_unknown_authorization": "stop_and_clarify"
+  },
+  "benchmarking": {
+    "control": [
+      "exact_model_version",
+      "reasoning_effort",
+      "tools",
+      "challenge",
+      "hardware",
+      "network",
+      "prompts",
+      "concurrency",
+      "budget"
+    ],
+    "separate_cross_model_results": true
+  }
+}
