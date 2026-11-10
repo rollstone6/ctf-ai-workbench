@@ -1,0 +1,6 @@
+{
+  "config": {
+    "install_script": "#!/usr/bin/env bash\nset -euo pipefail\ncd /workspace/CTF_WP\nbash tools/environment/setup.sh\n",
+    "start_skill": "Use /workspace/CTF_WP. Tasks are already isolated; do not create a Git worktree unless explicitly requested. All source is bundled under vendor/; standalone upstream checkouts are not required. Run `cd /workspace/CTF_WP && bash tools/environment/setup.sh`, then `export PATH=\"/workspace/CTF_WP/bin:$PATH\"`. Expected: 13 skill links, sapper 1.0.0, a valid temporary fact graph and 64 passing tests. No background services are required. See docs/environment.md for observed Debian 13.6 x86_64 system details, runtime versions and usage. Read .agents/skills/*/SKILL.md for individual skills. No project graph or hooks are initialized. Optional Tavily search and Docker competition mode require separate runtime configuration and credentials; do not store secrets in the repository."
+  }
+}
