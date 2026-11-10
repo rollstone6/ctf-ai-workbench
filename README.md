@@ -45,3 +45,16 @@ pwn.college
 由于安全考虑，内核默认会忽略脚本文件（如 Bash、Python 脚本）的 setuid 位。这是一个重要的安全特性，因为脚本比二进制文件更容易被篡改和注入恶意代码。
 
 2、chmod 644 修改文件变普通用户可读
+
+## CTF AI 技能与 Sapper
+
+现已将 CTF Skills、Sapper 和可复用环境脚本统一收录到本仓库。
+源码与许可证位于 `vendor/`，13 项技能入口位于 `.agents/skills/`。
+
+```bash
+bash tools/environment/setup.sh
+export PATH="$PWD/bin:$PATH"
+sapper --help
+```
+
+详见 [环境说明](docs/environment.md) 和 [上游版本记录](vendor/SOURCES.json)。

@@ -1,0 +1,14 @@
+[
+  {
+    "path": "ctf-skills",
+    "repository": "https://github.com/ljagiello/ctf-skills",
+    "commit": "2ad85d368a86c2bc1ce13143a3768f4e55fd1c61",
+    "license": "MIT"
+  },
+  {
+    "path": "sapper-v2",
+    "repository": "https://github.com/N1nEmAn/sapper-v2",
+    "commit": "d4de0770ae1fba706f00b7e29197ce739adbea94",
+    "license": "MIT"
+  }
+]
