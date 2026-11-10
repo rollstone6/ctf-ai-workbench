@@ -3630,7 +3630,7 @@ def _view_serve(store: Store, args) -> int:
                 return
             if self.path == "/" or self.path == "/index.html":
                 tpl = _load_view_template()
-                tpl = tpl.replace('"__POLL_URL__"', f'"{poll_path}"')
+                tpl = tpl.replace('const POLL_URL = "__POLL_URL__";', f'const POLL_URL = "{poll_path}";', 1)
                 body = tpl.encode("utf-8")
                 self.send_response(200)
                 self.send_header("Content-Type", "text/html; charset=utf-8")
