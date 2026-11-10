@@ -1589,10 +1589,44 @@ def cmd_init(args) -> int:
     return 0
 
 
+def chinese_feedback() -> bool:
+    """Human-facing feedback defaults to Chinese; protocols stay unchanged."""
+    return not os.environ.get("SAPPER_LANG", "zh").lower().startswith("en")
+
+
+def feedback(zh: str, en: str) -> str:
+    return zh if chinese_feedback() else en
+
+
+def render_status_zh(store: Store) -> str:
+    g = build_graph_view(store)
+    p = g["project"]
+    status = {"active": "进行中", "complete": "已完成", "completed": "已完成"}.get(p["status"], p["status"])
+    lines = [
+        f"项目：{_scrub_inline(p.get('id') or '')}  状态：{status}",
+        f"来源：{_scrub_inline(p['origin'])}",
+        f"目标：{_scrub_inline(p['goal'])}",
+        f"统计：{len(g['facts'])} 条事实，{len(g['open_intents'])} 项待办，"
+        f"{len(g['done_intents'])} 项已完成，{len(g['hints'])} 条提示",
+    ]
+    ready = frontier(store)
+    if ready:
+        lines.append("可执行任务：")
+        for intent in ready:
+            lines.append(f"  {intent['id']}  {_scrub_inline(intent['description'])}")
+    elif g["open_intents"]:
+        lines.append("暂无可执行任务，请检查依赖及确认状态。")
+    else:
+        lines.append("暂无待办任务；可添加任务，或运行 sapper dispatch reason 规划下一步。")
+    # Preserve the original ledger fields/values for scripts and diagnostics.
+    lines.extend(line for line in render_status(store).splitlines() if line.startswith("flag:"))
+    return "\n".join(lines)
+
+
 def cmd_status(args) -> int:
     store = Store(Path(args.store))
     store.require()
-    print(render_status(store))
+    print(render_status_zh(store) if chinese_feedback() else render_status(store))
     return 0
 
 
@@ -1611,11 +1645,11 @@ def cmd_validate(args) -> int:
     store.require()
     errors = validate_graph(store)
     if errors:
-        print(f"graph invalid: {len(errors)} error(s)")
+        print(feedback(f"事实图校验失败：{len(errors)} 项错误", f"graph invalid: {len(errors)} error(s)"))
         for error in errors:
             print(f"  - {error}")
         return 1
-    print(f"graph valid: {store.root}")
+    print(feedback(f"事实图校验通过：{store.root}", f"graph valid: {store.root}"))
     return 0
 
 
@@ -1624,7 +1658,7 @@ def cmd_frontier(args) -> int:
     store.require()
     fr = frontier(store)
     if not fr:
-        print("(no ready intents)")
+        print(feedback("（暂无可执行任务）", "(no ready intents)"))
         return 0
     for i in fr:
         mark = ""
@@ -4716,7 +4750,7 @@ def main(argv: list[str] | None = None) -> int:
     try:
         return args.func(args)
     except FGError as exc:
-        sys.stderr.write(f"sapper: {exc}\n")
+        sys.stderr.write(feedback(f"sapper：操作失败，详细信息：{exc}\n", f"sapper: {exc}\n"))
         return 1
     except BrokenPipeError:
         return 0

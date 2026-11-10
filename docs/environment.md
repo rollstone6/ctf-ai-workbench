@@ -71,3 +71,9 @@ bash tools/environment/start-sapper.sh
 验证服务时，应请求页面并读取页面引用的实时图 JSON，确认返回当前任务目标；仅有进程或端口不能证明启动成功。
 
 该服务展示和跟踪任务图；自动解题需要另行提供具体任务。完整竞赛编队还需要平台地址、模型网关和凭据，当前未配置。
+
+## 项目理解与中文反馈
+
+目前提供 15 项技能：12 项 CTF 专项技能、Sapper 初始化技能，以及仓库原创的 `project-analysis`、`code-read`。
+Sapper 常用反馈默认中文，英文 CLI 模式示例：`SAPPER_LANG=en bin/sapper status`。
+详细代码调用链、中文化范围及兼容性限制见 [项目分析说明](project-analysis.md)。

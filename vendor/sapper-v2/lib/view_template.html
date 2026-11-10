@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>sapper — engagement graph</title>
+<title>sapper — 项目任务图</title>
 <style>
   :root{
     --bg:#0a0e17; --panel:#111726; --panel2:#0e1422; --line:#1e2740;
@@ -85,14 +85,14 @@
 <body>
 <header>
   <div class="title"><span class="dot"></span>sapper</div>
-  <span id="status" class="badge">active</span>
-  <div class="goal">goal: <b id="goal-text">—</b></div>
+  <span id="status" class="badge">进行中</span>
+  <div class="goal">目标：<b id="goal-text">—</b></div>
   <div class="stats" id="stats"></div>
-  <div class="live off" id="live"><span class="pulse"></span><span id="live-txt">static</span></div>
+  <div class="live off" id="live"><span class="pulse"></span><span id="live-txt">手动刷新</span></div>
   <div class="ctrls">
-    <button id="btn-refresh" title="refetch & redraw">↻</button>
-    <button id="btn-autorefresh" title="toggle auto-refresh">auto</button>
-    <button id="btn-fit" title="fit to screen">fit</button>
+    <button id="btn-refresh" title="重新加载任务图">↻</button>
+    <button id="btn-autorefresh" title="切换自动刷新">自动刷新</button>
+    <button id="btn-fit" title="适应屏幕">适应屏幕</button>
   </div>
 </header>
 <main>
@@ -121,24 +121,24 @@
   </svg>
   <div class="empty" id="empty" style="display:none">
     <div style="font-size:28px;opacity:.4">◯</div>
-    <div>no graph yet</div>
+    <div>尚无任务图</div>
     <div style="opacity:.6">run <code style="color:var(--cyan)">sapper fact</code> / <code style="color:var(--cyan)">sapper intent</code> to add nodes</div>
   </div>
   <div class="floating" id="legend">
-    <h4>legend</h4>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#3b82f6,#1d4ed8)"></span>seed fact</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#34d399,#059669)"></span>derived fact</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fbbf24,#d97706);box-shadow:0 0 8px #f59e0b"></span>goal</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#60a5fa,#1e40af)"></span>host</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#38bdf8,#0369a1)"></span>service</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#c084fc,#7e22ce)"></span>cred</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fb7185,#be123c)"></span>vuln</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fbbf24,#b45309)"></span>loot</div>
-    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#4ade80,#15803d);box-shadow:0 0 8px #22c55e"></span>flag</div>
-    <div class="row"><span class="sw" style="background:#10b981"></span>done intent</div>
-    <div class="row"><span class="sw dashed" style="border-color:#f59e0b"></span>open intent</div>
-    <div class="row"><span class="sw dashed" style="border-color:#facc15"></span>claimed</div>
-    <div class="row"><span class="sw dashed" style="border-color:#f43f5e"></span>needs confirm</div>
+    <h4>图例</h4>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#3b82f6,#1d4ed8)"></span>初始事实</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#34d399,#059669)"></span>推导事实</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fbbf24,#d97706);box-shadow:0 0 8px #f59e0b"></span>目标</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#60a5fa,#1e40af)"></span>主机</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#38bdf8,#0369a1)"></span>服务</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#c084fc,#7e22ce)"></span>凭据</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fb7185,#be123c)"></span>漏洞</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#fbbf24,#b45309)"></span>收集数据</div>
+    <div class="row"><span class="nd" style="background:linear-gradient(180deg,#4ade80,#15803d);box-shadow:0 0 8px #22c55e"></span>Flag</div>
+    <div class="row"><span class="sw" style="background:#10b981"></span>已完成任务</div>
+    <div class="row"><span class="sw dashed" style="border-color:#f59e0b"></span>待办任务</div>
+    <div class="row"><span class="sw dashed" style="border-color:#facc15"></span>已认领</div>
+    <div class="row"><span class="sw dashed" style="border-color:#f43f5e"></span>待确认</div>
   </div>
   <div class="floating" id="detail">
     <h4><span id="d-title">—</span><span class="close" id="d-close">✕</span></h4>
@@ -244,11 +244,11 @@ function render(g){
   window.__fg = g;
   if(!g){ $("empty").style.display="flex"; return; }
   const project = g.project||{};
-  $("status").textContent = project.status||"active";
+  $("status").textContent = ({active:"进行中",complete:"已完成",completed:"已完成"})[project.status] || project.status || "进行中";
   $("status").className = "badge "+(project.status||"active");
   $("goal-text").textContent = project.goal||"—";
   const fc=(g.facts||[]).length, oi=(g.intents||[]).filter(x=>!x.to).length, di=(g.intents||[]).length-oi, hc=(g.hints||[]).length;
-  $("stats").innerHTML = `<span><b>${fc}</b> facts</span><span><b>${oi}</b> open</span><span><b>${di}</b> done</span><span><b>${hc}</b> hints</span>`;
+  $("stats").innerHTML = `<span><b>${fc}</b> 条事实</span><span><b>${oi}</b> 项待办</span><span><b>${di}</b> 项已完成</span><span><b>${hc}</b> 条提示</span>`;
 
   const L = layout(g);
   if(!L.pos || !Object.keys(L.pos).length){ $("empty").style.display="flex"; return; }
@@ -318,7 +318,7 @@ function render(g){
     // top-left: id chip
     const idt=document.createElementNS("http://www.w3.org/2000/svg","text");
     idt.setAttribute("class","id"); idt.setAttribute("x",12); idt.setAttribute("y",22);
-    idt.textContent = kind==="goal"?"★ goal":(f.kind&&f.kind!=="note"?id+" · "+f.kind:id);
+    idt.textContent = kind==="goal"?"★ 目标":(f.kind&&f.kind!=="note"?id+" · "+f.kind:id);
     g2.appendChild(idt);
     // main label: TITLE (chinese) big, fallback to truncated description
     const dt=document.createElementNS("http://www.w3.org/2000/svg","text");
@@ -432,7 +432,7 @@ async function refresh(){
   try{
     const g=await fetchGraph();
     if(JSON.stringify(g)!==JSON.stringify(lastGraph)){ lastGraph=g; render(g); }
-  }catch(e){ document.getElementById("live-txt").textContent="error"; }
+  }catch(e){ document.getElementById("live-txt").textContent="加载失败"; }
 }
 document.getElementById("btn-refresh").onclick=refresh;
 document.getElementById("btn-autorefresh").onclick=()=>{
@@ -440,10 +440,10 @@ document.getElementById("btn-autorefresh").onclick=()=>{
   const live=document.getElementById("live");
   if(auto){
     live.classList.remove("off");
-    document.getElementById("live-txt").textContent = POLL_URL && POLL_URL!=="__POLL_URL__" ? "live" : "static";
+    document.getElementById("live-txt").textContent = POLL_URL && POLL_URL!=="__POLL_URL__" ? "实时更新" : "手动刷新";
     timer=setInterval(refresh, 2000);
   } else {
-    live.classList.add("off"); document.getElementById("live-txt").textContent="paused";
+    live.classList.add("off"); document.getElementById("live-txt").textContent="已暂停";
     clearInterval(timer); timer=null;
   }
 };

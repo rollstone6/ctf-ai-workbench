@@ -11,7 +11,8 @@
     "commit": "d4de0770ae1fba706f00b7e29197ce739adbea94",
     "license": "MIT",
     "local_changes": [
-      "Fix live viewer polling URL substitution: replace only the declaration, preserving placeholder guards."
+      "Fix live viewer polling URL substitution: replace only the declaration, preserving placeholder guards.",
+      "Chinese-first CLI status/validation/error feedback (SAPPER_LANG=en restores English), Chinese viewer labels and Chinese model report policy."
     ]
   }
 ]

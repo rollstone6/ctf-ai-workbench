@@ -49,7 +49,7 @@ pwn.college
 ## CTF AI 技能与 Sapper
 
 现已将 CTF Skills、Sapper 和可复用环境脚本统一收录到本仓库。
-源码与许可证位于 `vendor/`，13 项技能入口位于 `.agents/skills/`。
+源码与许可证位于 `vendor/`，15 项技能入口位于 `.agents/skills/`。
 
 ```bash
 bash tools/environment/setup.sh
