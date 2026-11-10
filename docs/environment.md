@@ -77,3 +77,16 @@ bash tools/environment/start-sapper.sh
 目前提供 15 项技能：12 项 CTF 专项技能、Sapper 初始化技能，以及仓库原创的 `project-analysis`、`code-read`。
 Sapper 常用反馈默认中文，英文 CLI 模式示例：`SAPPER_LANG=en bin/sapper status`。
 详细代码调用链、中文化范围及兼容性限制见 [项目分析说明](project-analysis.md)。
+
+## 跨 Thread 继续工作
+
+长期项目规则见根目录 `AGENTS.md`，当前进度见 `.codex/TASK.md`。后者是项目自定义交接文件，不具备内置自动读取/更新机制；本项目通过 AGENTS.md 的约定要求代理维护它。
+
+新 Thread 可使用以下提示：
+
+```text
+先阅读 AGENTS.md 和 .codex/TASK.md，核对 git status 与当前代码，
+再按我本次给出的目标继续；不要根据旧记录自动执行新的任务。
+```
+
+长任务交接前压缩更新 TASK.md，保留目标、完成/未完成项、关键决策、修改文件、验证结果和下一步。详细设计放在 docs，日志保存在临时文件；不把交接文件当作聊天归档。
